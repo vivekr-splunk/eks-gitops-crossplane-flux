@@ -1,7 +1,7 @@
 serviceAccounts:
   server:
     name: prometheus-service-account
-    annotations: 
+    annotations:
       #
       # Set this to the ARN of an IAM role for the service account.
       # For details, refer to the documentation here: https://docs.aws.amazon.com/prometheus/latest/userguide/set-up-irsa.html
@@ -10,22 +10,22 @@ serviceAccounts:
 
 nodeExporter:
     enabled: false
-alertmanager:   
+alertmanager:
     enabled: false
 pushgateway:
     enabled: false
 kubeStateMetrics:
-    enabled: false    
+    enabled: false
 
 server:
     statefulSet:
         enabled: false
-    persistentVolume:   
+    persistentVolume:
         enabled: false
-        
+
     remoteWrite:
           #
-          # Set the ID of an AMP workspace 
+          # Set the ID of an AMP workspace
           #
         - url: https://aps-workspaces.us-west-2.amazonaws.com/workspaces/XXXXXXXXXXXXX/api/v1/remote_write
           sigv4:
@@ -33,4 +33,4 @@ server:
           queue_config:
             max_samples_per_send: 1000
             max_shards: 200
-            capacity: 2500            
+            capacity: 2500

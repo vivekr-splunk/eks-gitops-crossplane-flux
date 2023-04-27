@@ -1,10 +1,10 @@
 ```shell
 #
-# Set these environment variables 
+# Set these environment variables
 #
-export CLUSTER_NAME=XXXX
+export CLUSTER_NAME=vivek
 export GITHUB_TOKEN=XXXXX
-export GITHUB_USER=XXXX
+export GITHUB_USER=vivekr
 
 #
 # Bootstrapping the cluster with Flux
@@ -23,7 +23,7 @@ flux bootstrap github \
   --personal
 
 #
-# In order to authenticate with the external provider API such as AWS, the Crossplane AWS provider controller need to have access to credentials. 
+# In order to authenticate with the external provider API such as AWS, the Crossplane AWS provider controller need to have access to credentials.
 # An AWS user with Administrative privileges is needed to enable Crossplane to create the required resources
 # We wil have to first create a configuration file, secrets.conf, with credeantials of an AWS account in the following format.
 #
@@ -39,14 +39,14 @@ kubectl -n crossplane-system create secret generic aws-credentials --from-file=c
 # Next, deploy the Bitnami's Sealed Secrets controller in the 'sealed-secrets' namespace
 # Then, generate a SealedSecret corresponding to the 'aws-credentials' Secret created above. This is done as shown below using the 'kubeseal' companion utility for Bitnami's Sealed Secrets.
 # The file 'aws-credentials-sealed.yaml' resulting from the operation below is the one to deploy to the management cluster in the GitOps workflow.
-# Push this file to the './deploy/crossplane-composition' directory of the GitHub repo that Flux is pointing to 
+# Push this file to the './deploy/crossplane-composition' directory of the GitHub repo that Flux is pointing to
 #
 kubeseal --controller-namespace sealed-secrets --format yaml < aws-credentials.yaml > aws-credentials-sealed.yaml
 
 #
 # Important! Extract the master sealing key from the Sealed Secrets controller into a YAML file.
 # After extracting the master key, the Sealed Secrets controller may be termintaed.
-# The controller per se will get deployed as part of the GitOps workflow. 
+# The controller per se will get deployed as part of the GitOps workflow.
 # But you must make sure that the sealing key is first deployed using this file so that all SealedSecrets that were created using this master could be unsealed
 #
 kubectl get secret -n sealed-secrets -l sealedsecrets.bitnami.com/sealed-secrets-key -o yaml > sealing-master.yaml
@@ -56,7 +56,7 @@ kubectl get secret -n sealed-secrets -l sealedsecrets.bitnami.com/sealed-secrets
 # Now, you are ready to initiate the GitOps worflow.
 # Create a Kustomization resource under 'cluster/$CLUSTER_NAME' that points to the 'crossplane' directory in the config repo.
 # Pushing this file to the Git repository will trigger a Flux reconcilliation loop which will install the following:
-# 1. Crossplane core components 
+# 1. Crossplane core components
 # 2. Crossplane AWS provider-specific components
 # 3. Crossplane Configuration package for creating EKS cluster and other AWS resources
 # 4. Composite resource to create an EKS cluster

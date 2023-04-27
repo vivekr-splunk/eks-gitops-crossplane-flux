@@ -2,9 +2,9 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: eksclusters.eks.sarathy.io
+  name: eksclusters.eks.splunkpoc.io
 spec:
-  group: eks.sarathy.io
+  group: eks.splunkpoc.io
   names:
     kind: EKSCluster
     plural: eksclusters
@@ -28,75 +28,75 @@ spec:
                 properties:
                   region:
                     description: Geographic location of this VPC
-                    type: string       
-                    enum: ["us-east-1", "us-west-2"]   
-                    
+                    type: string
+                    enum: ["us-east-1", "us-west-2"]
+
                   vpc-cidrBlock:
                     description: CIDR block for VPC
-                    type: string   
+                    type: string
                   vpc-name:
                     description: Name for VPC
-                    type: string       
+                    type: string
 
                   subnet1-public-name:
                     description: Name for public subnet 1
-                    type: string  
+                    type: string
                   subnet1-public-cidrBlock:
                     description: CIDR block for public subnet 1
                     type: string
                   subnet1-public-availabilityZone:
                     description: AZ for public subnet 1
-                    type: string                      
+                    type: string
 
                   subnet2-public-name:
                     description: Name for public subnet 2
-                    type: string  
+                    type: string
                   subnet2-public-cidrBlock:
                     description: CIDR block for public subnet 2
-                    type: string  
+                    type: string
                   subnet2-public-availabilityZone:
                     description: AZ for public subnet 2
-                    type: string   
+                    type: string
 
                   subnet1-private-name:
                     description: Name for private subnet 1
-                    type: string  
+                    type: string
                   subnet1-private-cidrBlock:
                     description: CIDR block for private subnet 1
                     type: string
                   subnet1-private-availabilityZone:
                     description: AZ for private subnet 1
-                    type: string                      
+                    type: string
 
                   subnet2-private-name:
                     description: Name for private subnet 2
-                    type: string  
+                    type: string
                   subnet2-private-cidrBlock:
                     description: CIDR block for private subnet 2
-                    type: string  
+                    type: string
                   subnet2-private-availabilityZone:
                     description: AZ for private subnet 2
-                    type: string  
+                    type: string
 
                   cluster-role:
                     description: EKS cluster role
-                    type: string     
+                    type: string
                   workernode-role:
                     description: EKS worker node role
-                    type: string                                       
+                    type: string
 
                   k8s-version:
                     description: Kubernetes version
                     type: string
-                    enum: ["1.20", "1.21", "1.22"]    
+                    enum: ["1.23", "1.24", "1.25"]
                   workers-size:
                     description: Desired number of worker nodes in the cluster
                     type: integer
                   workload-type:
                     description: Type of workloads to be run on this cluster (GPU or non-GPU)"
-                    type: string       
-                    enum: ["gpu", "non-gpu"]                       
-                    
+                    type: string
+                    enum: ["gpu", "non-gpu"]
+
                 required:
                   - region
                   - vpc-name
@@ -112,11 +112,11 @@ spec:
                   - subnet1-private-availabilityZone
                   - subnet2-private-name
                   - subnet2-private-cidrBlock
-                  - subnet2-private-availabilityZone    
+                  - subnet2-private-availabilityZone
                   - k8s-version
                   - workers-size
-                  - workload-type   
-                  - cluster-role     
-                  - workernode-role      
+                  - workload-type
+                  - cluster-role
+                  - workernode-role
             required:
               - parameters

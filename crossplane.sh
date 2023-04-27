@@ -1,9 +1,10 @@
-##!/bin/bash
+
+#!/bin/bash
 
 #
 # The Crossplane CLI extends kubectl with functionality to build, push, and install Crossplane packages
 #
-curl -sL https://raw.githubusercontent.com/crossplane/crossplane/release-1.0/install.sh | sh
+curl -sL https://raw.githubusercontent.com/crossplane/crossplane/release-1.12/install.sh | sh
 sudo mv kubectl-crossplane /usr/local/bin
 
 #
@@ -16,10 +17,10 @@ helm repo update
 #
 # Install Crossplane core components using Helm chart
 #
-helm install crossplane --namespace crossplane-system crossplane-stable/crossplane --version 1.4.1
+helm install crossplane --namespace crossplane-system crossplane-stable/crossplane --version 1.12.0
 
 #
-# Providers extend Crossplane with custom resources that can be used to declaratively configure a system. 
+# Providers extend Crossplane with custom resources that can be used to declaratively configure a system.
 # In order to provision a resource, a CRD needs to be registered in your Kubernetes cluster and its controller should be watching the Custom Resources those CRDs define. 
 # Crossplane provider packages contain many CRDs and their controllers.
 # The 'provider-aws' package is the Crossplane infrastructure provider for AWS. This package contains the followig:
@@ -33,10 +34,10 @@ helm install crossplane --namespace crossplane-system crossplane-stable/crosspla
 # Check out documentation on installing providers: https://crossplane.io/docs/v1.3/concepts/providers.html
 #
 cd crossplane-imperative
-kubectl apply -f aws-provider.yaml 
+kubectl apply -f aws-provider.yaml
 
 #
-# In order to authenticate with the external provider API such as AWS, the provider controllers need to have access to credentials. 
+# In order to authenticate with the external provider API such as AWS, the provider controllers need to have access to credentials.
 # It could be an IAM User for AWS
 # An AWS user with Administrative privileges is needed to enable Crossplane to create the required resources
 # We wil have to first create a configuration file, secrets.conf, with credeantials of an AWS account in the following format.
@@ -56,17 +57,17 @@ kubectl apply -f aws-providerconfig.yaml
 
 
 #
-# Crossplane goes beyond simply modelling infrastructure primitives as ‘managed resources’. 
+# Crossplane goes beyond simply modelling infrastructure primitives as ‘managed resources’.
 # Composition is a concept that allows platform builders to define new custom resources that are composed of managed resources, like an RDS instance
 # Crossplane calls these “composite resources” (XRs).
 # Composition can be used to build a catalogue of custom resources and classes of configuration that fit the needs and opinions of your organisation. 
 # Crossplane uses two special resources to define and configure these new composite resources:
 # A CompositeResourceDefinition (XRD) defines a new kind of composite resource, including its schema. An XRD may optionally offer a claim (XRC).
-# A Composition specifies which managed resources a composite resource will be composed of, and how they should be configured. 
+# A Composition specifies which managed resources a composite resource will be composed of, and how they should be configured.
 # You can create multiple Composition options for each composite resource.
 # Check out the composition documentation: https://crossplane.io/docs/v1.3/concepts/composition.html
 #
-# CompositeResourceDefinitions (XRDs) and Compositions may be packaged and installed as a configuration. 
+# CompositeResourceDefinitions (XRDs) and Compositions may be packaged and installed as a configuration.
 # A configuration is a package of composition configuration that can easily be installed to Crossplane by creating a declarative 'Configuration' resource, or by using 'kubectl crossplane install configuration'.
 # Check out the documentation on creating configuration: https://crossplane.io/docs/v1.3/getting-started/create-configuration.html
 #
@@ -78,19 +79,19 @@ kubectl apply -f aws-providerconfig.yaml
 #
 cd eks-configuration
 kubectl crossplane build configuration
-kubectl crossplane push configuration public.ecr.aws/awsvijisarathy/crossplane-eks-composition:6.0.0
+kubectl crossplane push configuration docker.io/vivekrsplunk/crossplane-eks-composition:6.0.0
 
 
 #
-# Install the package to a cluster 
+# Install the package to a cluster
 #
-kubectl crossplane install configuration public.ecr.aws/awsvijisarathy/crossplane-eks-composition:2.0.0
+kubectl crossplane install configuration docker.io/vivekrsplunk/crossplane-eks-composition:2.0.0
 
 #
 # Check if the package and the XRDs defined in it were installed properly
 #
 kubectl get Configuration crossplane-eks-composition
-kubectl get CompositeResourceDefinition eksclusters.eks.sarathy.io
+kubectl get CompositeResourceDefinition eksclusters.eks..io
 
 #
 # Create an EKS cluster and a nodegroup using an XR
@@ -98,7 +99,7 @@ kubectl get CompositeResourceDefinition eksclusters.eks.sarathy.io
 kubectl apply -f eks-cluster-xr.yaml
 
 #
-# Here are a set of CLI commands to look at various resources 
+# Here are a set of CLI commands to look at various resources
 #
 kubectl get crossplane  # get all resources related to Crossplane.
 kubectl get managed     # get all resources that represent a unit of external infrastructure such as RDSInstance.
@@ -110,6 +111,6 @@ kubectl get composite   # get all resources that represent an XR
 #
 kubectl delete -f eks-cluster-xr.yaml
 kubectl delete -f aws-providerconfig.yaml
-kubectl delete -f aws-provider.yaml 
+kubectl delete -f aws-provider.yaml
 helm uninstall crossplane --namespace crossplane-system
 

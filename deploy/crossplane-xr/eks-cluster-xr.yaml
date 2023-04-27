@@ -1,5 +1,5 @@
 ---
-apiVersion: eks.sarathy.io/v1beta1
+apiVersion: eks.splunkpoc.io/v1beta1
 kind: EKSCluster
 metadata:
   name: crossplane-flux-cluster
@@ -12,18 +12,18 @@ spec:
     subnet1-public-name: "PUBLIC-WORKER-1 "
     subnet1-public-cidrBlock: "192.168.48.0/24"
     subnet1-public-availabilityZone: "us-west-2a"
-    
+
     subnet2-public-name: "PUBLIC-WORKER-2"
     subnet2-public-cidrBlock: "192.168.49.0/24"
-    subnet2-public-availabilityZone: "us-west-2b"    
+    subnet2-public-availabilityZone: "us-west-2b"
 
     subnet1-private-name: "PRIVATE-WORKER-1"
     subnet1-private-cidrBlock: "192.168.50.0/24"
     subnet1-private-availabilityZone: "us-west-2a"
-    
+
     subnet2-private-name: "PRIVATE-WORKER-2"
     subnet2-private-cidrBlock: "192.168.51.0/24"
-    subnet2-private-availabilityZone: "us-west-2b"    
+    subnet2-private-availabilityZone: "us-west-2b"
 
     cluster-role: "arn:aws:iam::XXXXXXXX:role/EKS-Cluster-Role"
     workernode-role: "arn:aws:iam::XXXXXXXX:role/EKS-WorkerNode-Role"
